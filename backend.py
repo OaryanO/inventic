@@ -45,89 +45,34 @@ def infer_sentiment(text):
     response = llm.invoke(messages)
     return response.content
 
-# def identify_source(text):
-#     search = GoogleSerperAPIWrapper(serper_api_key=SERPER_API_KEY)
-
-#     urls = []
-#     results = search.results(text)
-
-#     for i in results["organic"][:2]:
-#         urls.append(i['link'])
-
-#     loader = WebBaseLoader(urls)
-#     docs = loader.load()
-
-#     llm = build_llm()
-
-#     prompt = ChatPromptTemplate.from_template(
-#         "Determine the most likely literary work and its author based on the following reference material: {context}"
-#     )
-
-#     chain = create_stuff_documents_chain(llm, prompt)
-#     result = chain.invoke({"context": docs})
-#     return result
-
-# def identify_source(text):
-#     llm = build_llm()
-
-#     query_prompt = [
-#     SystemMessage(content="""Convert this literary passage into a distinctive search query using unique phrases, character traits, or descriptive elements that would help identify its original book."""),
-#     HumanMessage(content=text)
-# ]
-
-#     query = llm.invoke(query_prompt).content.strip()
-
-#     search = GoogleSerperAPIWrapper(serper_api_key=SERPER_API_KEY)
-
-#     try:
-#         results = search.results(query)
-#     except Exception:
-#         return "Source could not be identified."
-
-#     if not results.get("organic"):
-#         return "Source could not be identified."
-
-#     urls = []
-#     for i in results["organic"][:5]:
-#         urls.append(i['link'])
-
-#     loader = WebBaseLoader(urls)
-#     docs = loader.load()
-
-#     prompt = ChatPromptTemplate.from_template(
-#         "Identify the most probable book and its author based on the following material: {context}"
-#     )
-
-#     chain = create_stuff_documents_chain(llm, prompt)
-
-#     try:
-#         result = chain.invoke({"context": docs})
-#         return result
-#     except Exception:
-#         return "Source could not be confidently determined."
-    
 def identify_source(text):
     llm = build_llm()
 
     attribution_prompt = [
-        SystemMessage(content="""
-            You are a literary attribution expert.
+    SystemMessage(content="""
+            You are a literary attribution assistant.
 
-            Your task is to analyze the given passage and suggest the TOP 3 most likely books it could belong to.
+            Return ONLY 3 possible book matches.
 
-            Instructions:
-            - Base your reasoning on writing style, tone, era, and thematic elements.
-            - Return 3 possible matches even if unsure.
-            - Include both Book Name and Author.
+            STRICT RULES:
+            - No explanations
+            - No reasoning
+            - No additional text
+            - No introduction
+            - No justification
+            - No extra sentences
 
-            Respond strictly in this format:
+            Output format must be EXACTLY:
 
             1. Book Name - Author
             2. Book Name - Author
             3. Book Name - Author
+
+            If unsure, still provide best stylistic guesses.
+            Do NOT add anything else.
             """),
-        HumanMessage(content=text)
-    ]
+    HumanMessage(content=text)
+]
 
     try:
         response = llm.invoke(attribution_prompt).content.strip()
