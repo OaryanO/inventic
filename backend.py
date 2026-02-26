@@ -45,28 +45,67 @@ def infer_sentiment(text):
     response = llm.invoke(messages)
     return response.content
 
+# def identify_source(text):
+#     search = GoogleSerperAPIWrapper(serper_api_key=SERPER_API_KEY)
+
+#     urls = []
+#     results = search.results(text)
+
+#     for i in results["organic"][:2]:
+#         urls.append(i['link'])
+
+#     loader = WebBaseLoader(urls)
+#     docs = loader.load()
+
+#     llm = build_llm()
+
+#     prompt = ChatPromptTemplate.from_template(
+#         "Determine the most likely literary work and its author based on the following reference material: {context}"
+#     )
+
+#     chain = create_stuff_documents_chain(llm, prompt)
+#     result = chain.invoke({"context": docs})
+#     return result
+
 def identify_source(text):
+    llm = build_llm()
+
+    query_prompt = [
+        SystemMessage(content="Convert the following literary passage into a short search query to identify its book source."),
+        HumanMessage(content=text)
+    ]
+
+    query = llm.invoke(query_prompt).content.strip()
+
     search = GoogleSerperAPIWrapper(serper_api_key=SERPER_API_KEY)
 
-    urls = []
-    results = search.results(text)
+    try:
+        results = search.results(query)
+    except Exception:
+        return "Source could not be identified."
 
+    if not results.get("organic"):
+        return "Source could not be identified."
+
+    urls = []
     for i in results["organic"][:2]:
         urls.append(i['link'])
 
     loader = WebBaseLoader(urls)
     docs = loader.load()
 
-    llm = build_llm()
-
     prompt = ChatPromptTemplate.from_template(
-        "Determine the most likely literary work and its author based on the following reference material: {context}"
+        "Identify the most probable book and its author based on the following material: {context}"
     )
 
     chain = create_stuff_documents_chain(llm, prompt)
-    result = chain.invoke({"context": docs})
-    return result
 
-
+    try:
+        result = chain.invoke({"context": docs})
+        return result
+    except Exception:
+        return "Source could not be confidently determined."
+    
+    
 def compute_word_volume(text):
     return len(text.split())
