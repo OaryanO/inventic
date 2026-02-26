@@ -100,3 +100,5 @@ https://console.groq.com
 ---
 
 You're ready to go 🚀
+
+-Aryan Singh
