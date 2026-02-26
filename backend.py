@@ -67,45 +67,78 @@ def infer_sentiment(text):
 #     result = chain.invoke({"context": docs})
 #     return result
 
+# def identify_source(text):
+#     llm = build_llm()
+
+#     query_prompt = [
+#     SystemMessage(content="""Convert this literary passage into a distinctive search query using unique phrases, character traits, or descriptive elements that would help identify its original book."""),
+#     HumanMessage(content=text)
+# ]
+
+#     query = llm.invoke(query_prompt).content.strip()
+
+#     search = GoogleSerperAPIWrapper(serper_api_key=SERPER_API_KEY)
+
+#     try:
+#         results = search.results(query)
+#     except Exception:
+#         return "Source could not be identified."
+
+#     if not results.get("organic"):
+#         return "Source could not be identified."
+
+#     urls = []
+#     for i in results["organic"][:5]:
+#         urls.append(i['link'])
+
+#     loader = WebBaseLoader(urls)
+#     docs = loader.load()
+
+#     prompt = ChatPromptTemplate.from_template(
+#         "Identify the most probable book and its author based on the following material: {context}"
+#     )
+
+#     chain = create_stuff_documents_chain(llm, prompt)
+
+#     try:
+#         result = chain.invoke({"context": docs})
+#         return result
+#     except Exception:
+#         return "Source could not be confidently determined."
+    
 def identify_source(text):
     llm = build_llm()
 
-    query_prompt = [
-    SystemMessage(content="""Convert this literary passage into a distinctive search query using unique phrases, character traits, or descriptive elements that would help identify its original book."""),
-    HumanMessage(content=text)
-]
+    attribution_prompt = [
+        SystemMessage(content="""
+            You are a literary attribution assistant.
 
-    query = llm.invoke(query_prompt).content.strip()
+            Your task is to identify the most likely book and author of the provided passage.
 
-    search = GoogleSerperAPIWrapper(serper_api_key=SERPER_API_KEY)
+            Follow this process:
+            1. Check if the passage resembles a known literary quote.
+            2. If recognizable, provide:
+            Book Name - Author Name
+            3. If unsure, say:
+            Not confidently identifiable
+            Respond ONLY in the format:
+            <Book Name> - <Author Name>
+            or
+            Not confidently identifiable
+            """),
+        HumanMessage(content=text)
+    ]
 
     try:
-        results = search.results(query)
+        response = llm.invoke(attribution_prompt).content.strip()
     except Exception:
         return "Source could not be identified."
 
-    if not results.get("organic"):
+    if "Not confidently identifiable" in response:
         return "Source could not be identified."
 
-    urls = []
-    for i in results["organic"][:5]:
-        urls.append(i['link'])
+    return response
 
-    loader = WebBaseLoader(urls)
-    docs = loader.load()
-
-    prompt = ChatPromptTemplate.from_template(
-        "Identify the most probable book and its author based on the following material: {context}"
-    )
-
-    chain = create_stuff_documents_chain(llm, prompt)
-
-    try:
-        result = chain.invoke({"context": docs})
-        return result
-    except Exception:
-        return "Source could not be confidently determined."
-    
 
 def compute_word_volume(text):
     return len(text.split())
