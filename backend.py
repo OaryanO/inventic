@@ -111,33 +111,29 @@ def identify_source(text):
 
     attribution_prompt = [
         SystemMessage(content="""
-            You are a literary attribution assistant.
+            You are a literary attribution expert.
 
-            Your task is to identify the most likely book and author of the provided passage.
+            Your task is to analyze the given passage and suggest the TOP 3 most likely books it could belong to.
 
-            Follow this process:
-            1. Check if the passage resembles a known literary quote.
-            2. If recognizable, provide:
-            Book Name - Author Name
-            3. If unsure, say:
-            Not confidently identifiable
-            Respond ONLY in the format:
-            <Book Name> - <Author Name>
-            or
-            Not confidently identifiable
+            Instructions:
+            - Base your reasoning on writing style, tone, era, and thematic elements.
+            - Return 3 possible matches even if unsure.
+            - Include both Book Name and Author.
+
+            Respond strictly in this format:
+
+            1. Book Name - Author
+            2. Book Name - Author
+            3. Book Name - Author
             """),
         HumanMessage(content=text)
     ]
 
     try:
         response = llm.invoke(attribution_prompt).content.strip()
+        return response
     except Exception:
-        return "Source could not be identified."
-
-    if "Not confidently identifiable" in response:
-        return "Source could not be identified."
-
-    return response
+        return "Possible sources could not be determined."
 
 
 def compute_word_volume(text):
