@@ -15,7 +15,9 @@ Powered by **Groq (Llama-3.1-8B)** using LangChain and Streamlit.
 
 Create a `.env` file in the root directory and add your Groq API key:
 
+```
 GROQ_API_KEY=your_groq_api_key_here
+```
 
 ---
 
@@ -25,10 +27,12 @@ GROQ_API_KEY=your_groq_api_key_here
 
 Replace `<repo-url>` with your actual GitHub repo link.
 
+```
 git clone https://github.com/your-username/your-repo-name.git
 cd your-repo-name
+```
 
-⚠️ Do NOT copy `<repo-url>` as-is — replace it with your repo URL.
+⚠️ Do NOT copy the above URL as-is — replace it with your repo link.
 
 ---
 
@@ -36,13 +40,17 @@ cd your-repo-name
 
 #### Windows
 
+```
 python -m venv venv
-venv\\Scripts\\activate
+venv\Scripts\activate
+```
 
 #### Mac / Linux
 
+```
 python3 -m venv venv
 source venv/bin/activate
+```
 
 ---
 
@@ -50,16 +58,20 @@ source venv/bin/activate
 
 If you don’t have `requirements.txt`, create one with:
 
+```
 streamlit
 python-dotenv
 langchain
 langchain-core
 langchain-community
 langchain-groq
+```
 
 Then run:
 
+```
 pip install -r requirements.txt
+```
 
 ---
 
@@ -67,17 +79,23 @@ pip install -r requirements.txt
 
 In the project root, create:
 
+```
 .env
+```
 
 Add:
 
+```
 GROQ_API_KEY=your_actual_api_key
+```
 
 ---
 
 ### 5. Run the Application
 
+```
 streamlit run frontend.py
+```
 
 ---
 
@@ -103,11 +121,13 @@ streamlit run frontend.py
 
 ## 📂 Project Structure
 
+```
 backend.py        # LLM logic  
 frontend.py       # Streamlit UI  
 requirements.txt  # Dependencies  
 .env              # API key  
-README.md  
+README.md
+```
 
 ---
 
@@ -135,17 +155,17 @@ Aryan Singh
 
 If cloning fails:
 
+```
 git --version
+```
 
 If Streamlit fails:
 
+```
 pip install --upgrade pip
 pip install streamlit
+```
 
 ---
 
 You're ready to run 🚀
-"""
-
-
-print("README.md updated!")
