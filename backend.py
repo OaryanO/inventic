@@ -15,6 +15,8 @@ load_dotenv()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 SERPER_API_KEY = os.getenv("SERPER_API_KEY")
 
+os.environ["USER_AGENT"] = os.getenv("USER_AGENT")
+
 sentiment_instruction = """Analyze the passage and identify the dominant emotional tone expressed in it. Respond using only a single descriptive emotion word."""
 
 concise_brief_instruction = """Read the provided content and produce a clear and concise summary capturing the key ideas within two to three sentences."""
