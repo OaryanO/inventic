@@ -71,9 +71,9 @@ def identify_source(text):
     llm = build_llm()
 
     query_prompt = [
-        SystemMessage(content="Convert the following literary passage into a short search query to identify its book source."),
-        HumanMessage(content=text)
-    ]
+    SystemMessage(content="""Convert this literary passage into a distinctive search query using unique phrases, character traits, or descriptive elements that would help identify its original book."""),
+    HumanMessage(content=text)
+]
 
     query = llm.invoke(query_prompt).content.strip()
 
@@ -88,7 +88,7 @@ def identify_source(text):
         return "Source could not be identified."
 
     urls = []
-    for i in results["organic"][:2]:
+    for i in results["organic"][:5]:
         urls.append(i['link'])
 
     loader = WebBaseLoader(urls)
@@ -106,6 +106,6 @@ def identify_source(text):
     except Exception:
         return "Source could not be confidently determined."
     
-    
+
 def compute_word_volume(text):
     return len(text.split())
