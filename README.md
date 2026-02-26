@@ -7,7 +7,7 @@ This application analyzes a literary passage and provides:
 - Probable literary sources  
 - Concise summary  
 
-It is powered by **Groq + Llama-3.1-8B** using LangChain and Streamlit.
+Powered by **Groq (Llama-3.1-8B)** using LangChain and Streamlit.
 
 ---
 
@@ -23,18 +23,24 @@ GROQ_API_KEY=your_groq_api_key_here
 
 ### 1. Clone the Repository
 
-git clone <your-repo-link>
-cd <your-repo-folder>
+Replace `<repo-url>` with your actual GitHub repo link.
+
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+
+⚠️ Do NOT copy `<repo-url>` as-is — replace it with your repo URL.
 
 ---
 
-### 2. Create Virtual Environment
+### 2. Create a Virtual Environment
 
 #### Windows
+
 python -m venv venv
-venv\Scripts\activate
+venv\\Scripts\\activate
 
 #### Mac / Linux
+
 python3 -m venv venv
 source venv/bin/activate
 
@@ -42,11 +48,34 @@ source venv/bin/activate
 
 ### 3. Install Dependencies
 
+If you don’t have `requirements.txt`, create one with:
+
+streamlit
+python-dotenv
+langchain
+langchain-core
+langchain-community
+langchain-groq
+
+Then run:
+
 pip install -r requirements.txt
 
 ---
 
-### 4. Run the Application
+### 4. Create `.env` File
+
+In the project root, create:
+
+.env
+
+Add:
+
+GROQ_API_KEY=your_actual_api_key
+
+---
+
+### 5. Run the Application
 
 streamlit run frontend.py
 
@@ -56,10 +85,10 @@ streamlit run frontend.py
 
 | Feature | Description |
 |--------|-------------|
-| Word Count | Total number of words |
-| Emotion Detection | Identifies dominant tone |
+| Word Count | Counts total words |
+| Emotion Detection | Finds dominant tone |
 | Source Attribution | Suggests 3 possible books |
-| Summarization | Provides a concise overview |
+| Summarization | Generates concise summary |
 
 ---
 
@@ -74,31 +103,49 @@ streamlit run frontend.py
 
 ## 📂 Project Structure
 
-backend.py  
-frontend.py  
-requirements.txt  
-.env  
+backend.py        # LLM logic  
+frontend.py       # Streamlit UI  
+requirements.txt  # Dependencies  
+.env              # API key  
 README.md  
 
 ---
 
 ## ▶️ Usage
 
-1. Enter a literary passage  
+1. Paste any literary passage  
 2. Click **Run Analysis**  
-3. View insights instantly  
+3. View results instantly  
 
 ---
 
-## 🔑 Note
-
-Ensure your Groq API key is active.  
-You can get one from:
+## 🔑 Get Your Groq API Key
 
 https://console.groq.com
 
 ---
 
-You're ready to go 🚀
+## 👤 Author
 
--Aryan Singh
+Aryan Singh
+
+---
+
+## 🛠️ Troubleshooting
+
+If cloning fails:
+
+git --version
+
+If Streamlit fails:
+
+pip install --upgrade pip
+pip install streamlit
+
+---
+
+You're ready to run 🚀
+"""
+
+
+print("README.md updated!")
