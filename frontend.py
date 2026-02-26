@@ -4,10 +4,10 @@ from backend import generate_brief, infer_sentiment, identify_source, compute_wo
 
 st.set_page_config(page_title="Inventic Assignment", page_icon="📚", layout="centered")
 st.title("Inventic Assignment")
-st.markdown("Evaluates a literary passage and provides analytical insights.")
+st.markdown("Analyze a literary excerpt and uncover meaningful insights.")
 
-st.markdown("Paste the passage below and click 'Run Analysis' to see the results.")
-text = st.text_area("Enter Passage :- ")
+st.markdown("Provide a passage below and press 'Run Analysis' to view the results.")
+text = st.text_area("Input your passage here:")
 
 if st.button("Run Analysis"):
     with st.spinner("Processing the passage..."):
