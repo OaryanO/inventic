@@ -27,3 +27,6 @@ def app():
             volume = compute_word_volume(text)
             st.markdown("### Word Count")
             st.write(volume)
+
+if __name__ == "__main__":
+    app()
