@@ -115,3 +115,20 @@ def compute_word_volume(text):
 
     # Return total count
     return len(word_list)
+
+
+def find_char(text):
+    llm=build_llm()
+
+    prompt = '''
+    I will be providing you a passage and i would like the reponse just include up the character names strictly from the passsgae i will be giving to you and no random adding of charaters is allowed
+'''
+    our_prompt=[SystemMessage(content=prompt),HumanMessage(content=text)]
+
+    try:
+        res=llm.invoke(our_prompt).content
+
+        return res
+    except:
+        return "Not found"
+

@@ -1,6 +1,6 @@
 import streamlit as st
 
-from backend import generate_brief, infer_sentiment, identify_source, compute_word_volume
+from backend import generate_brief, infer_sentiment, identify_source, compute_word_volume,find_char
 
 st.set_page_config(page_title="Inventic Assignment", page_icon="📚", layout="centered")
 st.title("Inventic Assignment")
@@ -27,6 +27,10 @@ if st.button("Run Analysis"):
         brief = generate_brief(text)
         st.markdown("### Summary")
         st.write(brief)
+
+        chars=find_char(text)
+        st.markdown("### Character Names")
+        st.write(chars)
 
         
 
